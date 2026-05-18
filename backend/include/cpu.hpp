@@ -53,7 +53,7 @@ struct cpu_stat {
   bool isFilled();
 
   bool get_cpu_info();
-  bool get_cores_info();
+  bool update();
 
   cpu_stat();
 };

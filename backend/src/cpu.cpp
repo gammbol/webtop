@@ -56,7 +56,7 @@ bool cpu::cpu_stat::get_cpu_info() {
   return true;
 }
 
-bool cpu::cpu_stat::get_cores_info() {
+bool cpu::cpu_stat::update() {
   std::ifstream coresinfo(cpu::STAT);
   if (!coresinfo.is_open()) return false;
 
