@@ -27,7 +27,7 @@ bool cpu::cpu_stat::get_cpu_info() {
 
     if (!std::getline(ss, param, ':')) { std::cerr << line << std::endl; return false; }
     
-    param = trim(param);
+    param = string_helper::trim(param);
 
     if (param == "model name") {
       std::getline(ss, val, ':');
@@ -36,7 +36,7 @@ bool cpu::cpu_stat::get_cpu_info() {
     else if (param == "siblings") {
       std::getline(ss, val, ':');
       try {
-        cores_num = std::stoi(trim(val));
+        cores_num = std::stoi(string_helper::trim(val));
       } catch (...) {
         return false;
       }

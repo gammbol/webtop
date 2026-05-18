@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 #include <cpu.hpp>
-#include <swap.hpp>
+#include <memory.hpp>
 
 namespace webtop {
 
@@ -20,26 +20,42 @@ class machine_stat {
   uint32_t uptime{};
 
   cpu::cpu_stat cpu{};
-  swap::swap_stat swap{};
+  memory::memory mem{};
 
 public:
   inline void show_usage() {
     cpu.update();
     sleep(3);
     cpu.update();
+    mem.update();
 
     std::cout << "========= STAT =========" << std::endl;
     std::cout << "name: " <<  cpu.name << std::endl;
     std::cout << "hz: " << cpu.hz / 1000 << "GHz" << std::endl;
     std::cout << "cores: " << (int)cpu.cores_num << std::endl;
-    std::cout << "swap used: " << (swap.isUsed ? "yes" : "no") << std::endl;
-    if (swap.isUsed) std::cout << "swap size: " << (double)swap.size / 1048576 << "gb" << std::endl;
+    std::cout << "swap used: " 
+              << (
+                mem.swap_total ? 
+                std::format(
+                  "{}gb total ({}gb avaliable)", 
+                  (double)mem.swap_total / memory::KBTOGB, 
+                  (double)mem.swap_available / memory::KBTOGB
+                ) : 
+                "no"
+              ) 
+              << std::endl;
     std::cout << "uptime: " << uptime_to_string() << std::endl;
     std::cout << "========================" << std::endl;
     
     std::cout << "\n";
 
     std::cout << "========= USAGE =========" << std::endl;
+    std::cout << "RAM: " 
+              << (double)mem.ram_total / memory::KBTOGB
+              << "gb total ("
+              << (double)mem.ram_available / memory::KBTOGB
+              << "gb available)"
+              << std::endl;
     for (uint8_t core = 0; core < cpu.cores_num; ++core) {
       std::cout << "cpu" << (int)core << ": " << cpu.cores[core].calculate_usage() << "%";
       std::cout << std::endl;

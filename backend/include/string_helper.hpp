@@ -5,6 +5,8 @@
 #include <cctype>
 #include <string>
 
+namespace string_helper {
+
 inline std::string trim(const std::string& str) {
     auto start = std::find_if(
         str.begin(),
@@ -25,6 +27,8 @@ inline std::string trim(const std::string& str) {
     if (start >= end) return "";
 
     return std::string(start, end);
+}
+
 }
 
 #endif
