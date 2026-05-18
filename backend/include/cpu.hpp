@@ -55,8 +55,6 @@ struct cpu_stat {
   bool get_cpu_info();
   bool get_cores_info();
 
-  void show_usage();
-
   cpu_stat();
 };
 

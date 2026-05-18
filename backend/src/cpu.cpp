@@ -1,33 +1,10 @@
 #include <cpu.hpp>
 #include <iostream>
-#include <unistd.h>
-#include <exception>
 
 cpu::cpu_stat::cpu_stat() {
   if (!get_cpu_info()) throw std::runtime_error("ERROR");
 
   cores.resize(cores_num);
-}
-
-void cpu::cpu_stat::show_usage() {
-  get_cores_info();
-  sleep(3);
-  get_cores_info();
-
-  std::cout << "========= STAT =========" << std::endl;
-  std::cout << "name: " <<  name << std::endl;
-  std::cout << "hz: " << hz << std::endl;
-  std::cout << "cores: " << (int)cores_num << std::endl;
-  std::cout << "========================" << std::endl;
-  
-  std::cout << "\n";
-
-  std::cout << "========= USAGE =========" << std::endl;
-  for (uint8_t core = 0; core < cores_num; ++core) {
-    std::cout << "cpu" << (int)core << ": " << cores[core].calculate_usage() << "%";
-    std::cout << std::endl;
-  }
-  std::cout << "=========================" << std::endl;
 }
 
 bool cpu::cpu_stat::isFilled() {
