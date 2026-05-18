@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.60)
-project(webtop)
+project(webtop CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 

@@ -6,11 +6,13 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 #include <iostream>
 #include <unistd.h>
 
 #include <cpu.hpp>
 #include <memory.hpp>
+#include <procs.hpp>
 
 namespace webtop {
 
@@ -21,13 +23,16 @@ class machine_stat {
 
   cpu::cpu_stat cpu{};
   memory::memory mem{};
+  process::procs procs{};
 
 public:
   inline void show_usage() {
     cpu.update();
+    procs.update();
     sleep(3);
     cpu.update();
     mem.update();
+    procs.update();
 
     std::cout << "========= STAT =========" << std::endl;
     std::cout << "name: " <<  cpu.name << std::endl;
@@ -61,6 +66,39 @@ public:
       std::cout << std::endl;
     }
     std::cout << "=========================" << std::endl;
+
+    std::cout << "\n";
+
+    std::cout << "============================== PROCESSES ==============================\n";
+
+std::cout
+    << std::left
+    << std::setw(8)  << "PID"
+    << std::setw(8)  << "PPID"
+    << std::setw(30) << "NAME"
+    << std::setw(10) << "CPU%"
+    << std::setw(12) << "MEM"
+    << std::setw(12) << "UTIME"
+    << std::setw(12) << "STIME"
+    << '\n';
+
+std::cout << std::string(92, '-') << '\n';
+
+for (const auto& proc : procs.proc_list) {
+    std::cout
+        << std::left
+        << std::setw(8)  << proc.pid
+        << std::setw(8)  << proc.ppid
+        << std::setw(30) << proc.name
+        << std::setw(10) << std::fixed << std::setprecision(2)
+                         << proc.cpu_usage
+        << std::setw(12) << proc.memory_bytes
+        << std::setw(12) << proc.utime
+        << std::setw(12) << proc.stime
+        << '\n';
+}
+
+std::cout << "========================================================================\n";
   }
 
   void update_uptime() {

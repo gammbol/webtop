@@ -13,3 +13,8 @@ webtop is a service for remote pc resource monitoring
   - MEM%
   - TIME+
   - Command
+
+## Dependencies
+- Clang/GCC
+- CMake
+- libproc2-dev
